@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./docker.nix
     ];
 
   # This value determines the NixOS release with which your system is to be
@@ -68,6 +69,7 @@
     enable = true;
     permitRootLogin = "no";
     passwordAuthentication = false;
+    ports = [ 5510 ];
   };
   
   services.ntp.enable = true;
@@ -80,7 +82,7 @@
   networking.firewall = {
     enable = true;
     allowPing = true;
-    allowedTCPPorts = [ 22 ];
+    allowedTCPPorts = [ 5510 ];
     allowedUDPPortRanges = [ { from = 60000; to = 60010; } ];
   };
 
@@ -108,12 +110,13 @@
   users.extraUsers.d6e = {
     isNormalUser = true;
     home = "/home/d6e";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     initialPassword = "changeme";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK1gRLFVCsa9B7S2eEXJpggTgLSZ6kqkbHGJy7MYlgab kr-phone@d6e.io" 
     ];
   };
+  
 
   # Auto GC every morning
   nix.gc.automatic = false;
