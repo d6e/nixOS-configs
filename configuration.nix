@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./docker.nix
+      ./metrics.nix
     ];
 
   # This value determines the NixOS release with which your system is to be
@@ -53,6 +54,7 @@
     mosh
     tmux
     fail2ban
+    nix-repl
     git
   ];
 
@@ -79,10 +81,15 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
+  networking.hostName = "metrics.megacrit.com";
   networking.firewall = {
     enable = true;
     allowPing = true;
-    allowedTCPPorts = [ 5510 ];
+    allowedTCPPorts = [
+      5510 # ssh
+      9999 # xinetd script to update metrics app
+      80   # docker/nginx/metrics_app
+    ];
     allowedUDPPortRanges = [ { from = 60000; to = 60010; } ];
   };
 
