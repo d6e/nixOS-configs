@@ -9,7 +9,9 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./docker.nix
-      ./metrics.nix
+      ./prometheus.nix
+      #./exim.nix
+      #./gitlab-runner.nix
     ];
 
   # This value determines the NixOS release with which your system is to be
@@ -32,11 +34,11 @@
   networking.usePredictableInterfaceNames = false;
 
   # Select internationalisation properties.
-  # i18n = {
-  #   consoleFont = "Lat2-Terminus16";
-  #   consoleKeyMap = "us";
-  #   defaultLocale = "en_US.UTF-8";
-  # };
+  i18n = {
+    consoleFont = "Lat2-Terminus16";
+    consoleKeyMap = "us";
+    defaultLocale = "en_US.UTF-8";
+  };
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -56,6 +58,8 @@
     fail2ban
     nix-repl
     git
+    parallel
+    youtube-dl
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -65,6 +69,7 @@
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
   # List services that you want to enable:
+  
 
   # Enable the OpenSSH daemon.
   services.openssh = {
@@ -81,7 +86,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.hostName = "metrics.megacrit.com";
+  networking.hostName = "neon.d6e.io";
   networking.firewall = {
     enable = true;
     allowPing = true;
@@ -128,6 +133,7 @@
   # Auto GC every morning
   nix.gc.automatic = false;
   services.cron.systemCronJobs = [ "0 3 * * * root /etc/admin/optimize-nix" ];
+  services.nixosManual.enable = true;
   
   environment.etc =
   {

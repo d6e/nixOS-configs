@@ -9,5 +9,5 @@
     autoPrune.enable = true;
   }; 
 
-  environment.systemPackages = with pkgs; [ docker_compose ];
+  environment.systemPackages = with pkgs; [ docker docker_compose ];
 }
