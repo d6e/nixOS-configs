@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./docker.nix
       ./prometheus.nix
+      ./grafana.nix
       #./exim.nix
       #./gitlab-runner.nix
     ];
@@ -41,7 +42,7 @@
   };
 
   # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  time.timeZone = "UTC";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -61,6 +62,7 @@
     parallel
     youtube-dl
   ];
+  programs.vim.defaultEditor= true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -76,7 +78,7 @@
     enable = true;
     permitRootLogin = "no";
     passwordAuthentication = false;
-    ports = [ 5510 ];
+    ports = [ 5510 ]; # appends to allowedTCPPorts
   };
   
   services.ntp.enable = true;
@@ -90,13 +92,9 @@
   networking.firewall = {
     enable = true;
     allowPing = true;
-    allowedTCPPorts = [
-      5510 # ssh
-      9999 # xinetd script to update metrics app
-      80   # docker/nginx/metrics_app
-    ];
-    allowedUDPPortRanges = [ { from = 60000; to = 60010; } ];
+    allowedTCPPorts = [];
   };
+  programs.mosh.enable = true; # opens port 60000 to 61000
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
