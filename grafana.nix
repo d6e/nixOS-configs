@@ -8,13 +8,11 @@ in
   networking.firewall.allowedTCPPorts = [ port ];
   services.grafana = {
     enable = true; 
-    addr = "0.0.0.0";
+    addr = "localhost";
     port = port;
     protocol = "http";
-    security = {
-      adminUser = "d6e";
-      adminPassword = "asupersecret";
-    };
+    security.adminUser = "testuser";
+    security.adminPassword = "supersecret";
     auth.anonymous.enable = true;
   };
 }
